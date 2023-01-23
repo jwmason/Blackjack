@@ -1,0 +1,119 @@
+//Code for the project: Blackjack
+
+//the variables
+
+var card1;
+var card2;
+var hitCard;
+var cardTotal= 0;
+
+//the game
+
+main();
+
+//This function runs the entire program
+
+function main() {
+  
+
+  //This function controls the buttons that led up to the game, including
+  //instructions and tips
+  
+  intro();
+
+  //This function holds the code of the game, it sets the values of the
+  //variables and defines all the buttons accessible to the user in the game
+
+  game();
+}
+
+function intro() {
+  onEvent("startButton", "click", function(event) {
+  setScreen("screen2");
+});
+onEvent("playButton", "click", function(event) {
+  setScreen("screen3");
+});
+}
+
+function game(){
+setValues();
+gameButtons();
+playAgain();
+}
+
+function setValues(){
+  card1=randomNumber(1,10);
+  card2=randomNumber(1,10);
+  setText("cardValue", "Card Value: " +card1);
+  setText("cardValue2", "Card Value: " +card2);
+  cardTotal=card1+card2;
+}
+
+//this function calls the two sub-functions, allows the buttons
+//shown on the game screen to be able to work
+
+function gameButtons() {
+  hit();
+  stand();
+}
+
+//this function adds a random card value to the user's hand
+
+function hit() {
+  onEvent("hitButton", "click", function(event) {
+  hitCard=randomNumber(1,10);
+  cardTotal=cardTotal+hitCard;
+  setText("hitValue", "Hit Card: "+hitCard);
+  showElement("hitValue");
+  if(cardTotal>21){
+    setScreen("screen4");
+    setText("totalCardValue", "Total Card Value: "+cardTotal);
+    showElement("hitValueEnd");
+    setText("hitValueEnd", "Hit Card That Busted You: "+hitCard);
+  }else{
+      showElement("totalCardValueSoFar");
+      setText("totalCardValueSoFar", "Total Card Value: "+cardTotal);
+    }
+});
+}
+
+//this function determines if the user wins or loses
+
+function stand() {
+  onEvent("standButton", "click", function(event) {
+    if(cardTotal >= 17 && cardTotal <=21){
+      setScreen("screen5");
+      setText("totalCardValue2", "Total Card Value: "+cardTotal);
+    }else{
+      setScreen("screen4");
+      setText("totalCardValue", "Total Card Value: "+cardTotal);
+    }
+});
+}
+
+function playAgain() {
+  onEvent("playAgainButton", "click", function(event) {
+  setScreen("screen1");
+  card1=randomNumber(1,10);
+  card2=randomNumber(1,10);
+  cardTotal=card1+card2;
+  hideElement("totalCardValueSoFar");
+  hideElement("hitValue");
+  hideElement("hitValueEnd");
+  totalCardValueSoFar=hitCard+cardTotal;
+  setText("cardValue", "Card Value: "+card1);
+  setText("cardValue2", "Card Value: "+card2);
+});
+onEvent("playAgainButton2", "click", function(event) {
+  setScreen("screen1");
+  card1=randomNumber(1,10);
+  card2=randomNumber(1,10);
+  cardTotal=card1+card2;
+  hideElement("totalCardValueSoFar");
+  hideElement("hitValue");
+  totalCardValueSoFar=hitCard+cardTotal;
+  setText("cardValue", "Card Value: "+card1);
+  setText("cardValue2", "Card Value: "+card2);
+});
+}
